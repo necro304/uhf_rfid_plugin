@@ -1,7 +1,16 @@
 name: uhf_rfid_plugin
-description: "Flutter plugin for UHF RFID R2000 SDK (v2.5) - PDA7100 handheld device integration."
+description: "Flutter plugin for UHF RFID R2000 SDK and Barcode/QR Scanner. Supports PDA7100, PDA3109 and similar handheld devices."
 version: 1.0.0
-homepage: https://github.com/example/uhf_rfid_plugin
+homepage: https://github.com/necro304/uhf_rfid_plugin
+repository: https://github.com/necro304/uhf_rfid_plugin
+issue_tracker: https://github.com/necro304/uhf_rfid_plugin/issues
+
+topics:
+  - rfid
+  - uhf
+  - barcode
+  - scanner
+  - pda
 
 environment:
   sdk: ^3.10.1
@@ -15,6 +24,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  plugin_platform_interface: ^2.1.0
 
 flutter:
   plugin:
