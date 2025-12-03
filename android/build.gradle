@@ -1,0 +1,81 @@
+group = "com.example.uhf_rfid_plugin"
+version = "1.0"
+
+buildscript {
+    ext.kotlin_version = "1.9.22"
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.1.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+android {
+    namespace = "com.example.uhf_rfid_plugin"
+
+    compileSdk = 34
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += "src/main/kotlin"
+            jniLibs.srcDirs = ["src/main/jniLibs"]
+        }
+        test.java.srcDirs += "src/test/kotlin"
+    }
+
+    defaultConfig {
+        minSdk = 21
+        targetSdk = 34
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+    }
+
+    dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+        implementation(files("src/main/libs/UHF67_v3.6.jar"))
+        implementation(files("src/main/libs/ModuleAPI_J.jar"))
+        implementation(files("src/main/libs/reader(1).jar"))
+        implementation(files("src/main/libs/App_Demo_API.jar"))
+        implementation(files("src/main/libs/DeviceAPIver20150204.jar"))
+
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+        testImplementation("org.mockito:mockito-core:5.0.0")
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+
+            testLogging {
+               events "passed", "skipped", "failed", "standardOut", "standardError"
+               outputs.upToDateWhen {false}
+               showStandardStreams = true
+            }
+        }
+    }
+}

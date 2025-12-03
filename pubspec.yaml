@@ -1,0 +1,24 @@
+name: uhf_rfid_plugin
+description: "Flutter plugin for UHF RFID R2000 SDK (v2.5) - PDA7100 handheld device integration."
+version: 1.0.0
+homepage: https://github.com/example/uhf_rfid_plugin
+
+environment:
+  sdk: ^3.10.1
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.example.uhf_rfid_plugin
+        pluginClass: UhfRfidPlugin
