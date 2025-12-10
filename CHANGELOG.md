@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Version update and maintenance release
+
 ## 1.0.0
 
 * Initial release

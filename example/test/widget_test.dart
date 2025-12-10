@@ -11,17 +11,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:uhf_rfid_plugin_example/main.dart';
 
 void main() {
-  testWidgets('Verify Platform version', (WidgetTester tester) async {
+  testWidgets('App renders with navigation bar', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    // Verify that platform version is retrieved.
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) => widget is Text &&
-                           widget.data!.startsWith('Running on:'),
-      ),
-      findsOneWidget,
-    );
+    // Verify that the app renders with the navigation bar
+    expect(find.byType(NavigationBar), findsOneWidget);
+
+    // Verify that both navigation destinations are present
+    expect(find.text('RFID UHF'), findsOneWidget);
+    expect(find.text('Barcode/QR'), findsOneWidget);
   });
 }

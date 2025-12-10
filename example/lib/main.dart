@@ -150,12 +150,28 @@ class _RfidScannerPageState extends State<RfidScannerPage> {
     });
   }
 
-  void _onButtonEvent(TriggerButtonEvent event) {
-    // Actualizar estado de escaneo cuando el botón físico lo cambia
-    if (event.isReleased) {
-      setState(() {
-        _isScanning = event.isReading;
-      });
+  void _onButtonEvent(TriggerButtonEvent event) async {
+    // Controlar el inventario cuando el usuario presiona/suelta el botón físico
+    if (event.isPressed) {
+      // Al presionar: iniciar inventario
+      if (!_isScanning) {
+        try {
+          await UhfRfidPlugin.startInventory();
+          setState(() => _isScanning = true);
+        } on UhfException catch (e) {
+          _showError(e.message);
+        }
+      }
+    } else if (event.isReleased) {
+      // Al soltar: detener inventario
+      if (_isScanning) {
+        try {
+          await UhfRfidPlugin.stopInventory();
+          setState(() => _isScanning = false);
+        } on UhfException catch (e) {
+          _showError(e.message);
+        }
+      }
     }
   }
 

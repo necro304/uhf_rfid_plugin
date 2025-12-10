@@ -329,20 +329,56 @@ await UhfRfidPlugin.setBarcodeScanMode(BarcodeScanMode.focusInput);
 
 ## Botón Físico (Trigger)
 
-El plugin soporta el botón físico de los dispositivos PDA:
+El plugin detecta los eventos del botón físico del PDA y los envía a Flutter. **El plugin no ejecuta ninguna acción automática** al presionar el botón; la aplicación Flutter decide qué hacer con estos eventos.
+
+### Escuchar Eventos del Botón
 
 ```dart
 // Escuchar eventos del botón físico
 UhfRfidPlugin.buttonStream.listen((TriggerButtonEvent event) {
   if (event.isPressed) {
     print('Botón presionado');
+    // Decidir qué acción realizar, por ejemplo:
+    // - Iniciar inventario RFID
+    // - Iniciar escaneo de barcode
+    // - Cualquier otra acción personalizada
   } else if (event.isReleased) {
     print('Botón soltado');
-    print('¿Estaba leyendo?: ${event.isReading}');
+    // Decidir qué acción realizar al soltar
   }
 });
+```
 
-// Habilitar/deshabilitar el botón
+### Ejemplo: Controlar Inventario con el Botón
+
+```dart
+UhfRfidPlugin.buttonStream.listen((TriggerButtonEvent event) async {
+  if (event.isPressed) {
+    // Iniciar inventario al presionar
+    await UhfRfidPlugin.startInventory();
+  } else if (event.isReleased) {
+    // Detener inventario al soltar
+    await UhfRfidPlugin.stopInventory();
+  }
+});
+```
+
+### Ejemplo: Escanear Barcode con el Botón
+
+```dart
+UhfRfidPlugin.buttonStream.listen((TriggerButtonEvent event) async {
+  if (event.isPressed) {
+    await UhfRfidPlugin.startBarcodeScan();
+  } else if (event.isReleased) {
+    await UhfRfidPlugin.stopBarcodeScan();
+  }
+});
+```
+
+### Habilitar/Deshabilitar el Botón
+
+```dart
+// Habilitar/deshabilitar la detección del botón
 await UhfRfidPlugin.setTriggerButtonEnabled(true);
 
 // Verificar estado
@@ -436,14 +472,20 @@ class BarcodeResult {
 
 ```dart
 class TriggerButtonEvent {
-  final int keyCode;    // Código de la tecla
-  final String action;  // "down" o "up"
-  final bool isReading; // Estado del lector
+  final int keyCode;    // Código de la tecla (F3, F4, F7, 134, 137)
+  final String action;  // "down" (presionado) o "up" (soltado)
+  final bool isReading; // Estado actual del lector RFID
 
-  bool get isPressed;   // ¿Botón presionado?
-  bool get isReleased;  // ¿Botón soltado?
+  bool get isPressed;   // true si action == "down"
+  bool get isReleased;  // true si action == "up"
 }
 ```
+
+**Nota:** El plugin detecta los siguientes códigos de tecla físicos:
+- `KEYCODE_F3` - Dispositivos C510x
+- `KEYCODE_F4` - Dispositivos 6100
+- `KEYCODE_F7` - Dispositivos H3100
+- `134`, `137` - Teclas de escaneo PDA generales
 
 ---
 

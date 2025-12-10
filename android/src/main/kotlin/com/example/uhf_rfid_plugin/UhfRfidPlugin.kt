@@ -148,26 +148,13 @@ class UhfRfidPlugin: FlutterPlugin, MethodCallHandler, EventChannel.StreamHandle
                 Log.d(TAG, "KeyReceiver: keyCode=$keyCode, keyDown=$keyDown")
 
                 if (keyCode in TRIGGER_KEY_CODES) {
-                    // On key down, just send the event
-                    if (keyDown) {
-                        mainHandler.post {
-                            buttonEventSink?.success(mapOf(
-                                "keyCode" to keyCode,
-                                "action" to "down",
-                                "isReading" to isReading
-                            ))
-                        }
-                    } else {
-                        // On key up, toggle first then send event with NEW state
-                        mainHandler.post {
-                            toggleInventory()
-                            // Send event AFTER toggle with the new isReading state
-                            buttonEventSink?.success(mapOf(
-                                "keyCode" to keyCode,
-                                "action" to "up",
-                                "isReading" to isReading
-                            ))
-                        }
+                    // Send button event to Flutter - let the app decide what to do
+                    mainHandler.post {
+                        buttonEventSink?.success(mapOf(
+                            "keyCode" to keyCode,
+                            "action" to if (keyDown) "down" else "up",
+                            "isReading" to isReading
+                        ))
                     }
                 }
             }

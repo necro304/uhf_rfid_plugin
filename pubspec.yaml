@@ -1,6 +1,6 @@
 name: uhf_rfid_plugin
 description: "Flutter plugin for UHF RFID R2000 SDK and Barcode/QR Scanner. Supports PDA7100, PDA3109 and similar handheld devices."
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/necro304/uhf_rfid_plugin
 repository: https://github.com/necro304/uhf_rfid_plugin
 issue_tracker: https://github.com/necro304/uhf_rfid_plugin/issues
